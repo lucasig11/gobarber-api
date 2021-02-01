@@ -1,28 +1,13 @@
 import { Router } from 'express';
 
+import appointmentsRouter from './appointments.routes';
+import usersRouter from './users.routes';
+import sessionsRouter from './sessions.routes';
+
 const routes = Router();
 
-interface UserData {
-  "name": string,
-  "age": number
-}
-
-let users: Array<UserData> = [];
-
-routes.get('/users', (request, response) => response.json(users));
-
-
-routes.post('/users', (request, response) =>{
-  const { name, age } = request.body;
-
-  const user: UserData = {
-    "name": name,
-    "age": age,
-  }
-
-  users.push(user);
-
-  return response.json(user);
-});
+routes.use('/appointments', appointmentsRouter);
+routes.use('/users', usersRouter);
+routes.use('/sessions', sessionsRouter);
 
 export default routes;
