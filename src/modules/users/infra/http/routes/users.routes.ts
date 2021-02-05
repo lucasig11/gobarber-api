@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import uploadConfig from '../config/upload';
+import uploadConfig from '@config/upload';
 
-import CreateUserService from '../services/CreateUserService';
-import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import CreateUserService from '@users/services/CreateUserService';
+import UpdateUserAvatarService from '@users/services/UpdateUserAvatarService';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const upload = multer(uploadConfig);
@@ -44,7 +44,7 @@ usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async
     fileName: request.file.filename,
   })
 
-  delete user.password;
+  // delete user.password;
 
   return response.json(user);
 })

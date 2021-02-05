@@ -5,13 +5,14 @@ import 'express-async-errors';
 import cors from 'cors';
 
 import routes from './routes';
-import uploadConfig from './config/upload';
+import uploadConfig from '@config/upload';
 
-import AppError from './errors/AppError';
+import AppError from '@shared/errors/AppError';
 
-import './database';
+import '@shared/infra/typeorm';
 
 const app = express();
+const port = 3333;
 
 app.use(cors());
 app.use(express.json());
@@ -33,6 +34,6 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
 
 });
 
-app.listen(3333, () => {
-  console.log('Servidor conectado.');
+app.listen(port, () => {
+  console.log(`Server started on port ${port}.`);
 });
