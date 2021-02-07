@@ -1,24 +1,32 @@
 import { Router } from 'express';
+import { container } from 'tsyringe';
 
 import AuthenticateUserService from '@users/services/AuthenticateUserService';
-import UsersRepository from '@users/infra/typeorm/repositories/UsersRepository'
+
+interface ISafeResponse {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  created_at: Date;
+  updated_at: Date;
+}
 
 const sessionsRouter = Router();
 
 sessionsRouter.post('/', async (request, response) => {
   const { email, password } = request.body;
-  const usersRepository = new UsersRepository();
 
-  const authenticateUser = new AuthenticateUserService(usersRepository);
+  const authenticateUser = container.resolve(AuthenticateUserService);
 
   const { user, token } = await authenticateUser.execute({
     email,
     password,
   });
 
-  // delete user.password;
+  const safeResponse:ISafeResponse = user;
 
-  return response.json({ user, token });
+  return response.json({ safeResponse, token });
 });
 
 export default sessionsRouter;
