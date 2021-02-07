@@ -7,7 +7,8 @@ interface ISafeResponse {
   id: string;
   name: string;
   email: string;
-  avatar: string;
+  password?: string;
+  avatar?: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -25,6 +26,7 @@ sessionsRouter.post('/', async (request, response) => {
   });
 
   const safeResponse:ISafeResponse = user;
+  delete safeResponse.password;
 
   return response.json({ safeResponse, token });
 });

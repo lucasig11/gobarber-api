@@ -18,6 +18,7 @@ interface ISafeResponse {
   avatar: string;
   created_at: Date;
   updated_at: Date;
+  password?: string;
 }
 
 usersRouter.post('/', async (request, response) => {
@@ -32,12 +33,12 @@ usersRouter.post('/', async (request, response) => {
   });
 
   const safeResponse:ISafeResponse = user;
+  delete safeResponse.password;
 
   return response.json(safeResponse);
 })
 
 usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async (request, response) => {
-
   const updateUserAvatar = container.resolve(UpdateUserAvatarService);
 
   const user = await updateUserAvatar.execute({
