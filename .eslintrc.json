@@ -16,10 +16,11 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "prettier",
+    "prettier"
   ],
   "rules": {
     "prettier/prettier": "error",
+    "@typescript-eslint/interface-name-prefix": "always",
     "import/extensions": [
       "error",
       "ignorePackages",
