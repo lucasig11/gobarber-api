@@ -10,7 +10,6 @@ export default class DiskStorageProvider implements IStorageProvider {
       path.resolve(uploadConfig.tmpFolder, file),
       path.resolve(uploadConfig.uploadsFolder, file),
     )
-
     return file;
   }
 
@@ -22,7 +21,6 @@ export default class DiskStorageProvider implements IStorageProvider {
     } catch {
       return;
     }
-
     await fs.promises.unlink(filePath);
   }
 }

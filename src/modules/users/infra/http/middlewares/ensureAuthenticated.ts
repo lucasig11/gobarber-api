@@ -18,7 +18,6 @@ export default function ensureAuthenticated(request: Request, response: Response
   if (!authHeader) {
     throw new AppError('JWT token is missing.', 401);
   }
-
   // Header format = Bearer <token>
   // Splits the header to get only the token
   const [, token] = authHeader.split(' ');

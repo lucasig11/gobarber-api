@@ -17,7 +17,7 @@ const port = 3333;
 
 app.use(cors());
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.tmpFolder));
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
 
@@ -32,7 +32,6 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
     status: 'error',
     message: 'Internal server error.',
   });
-
 });
 
 app.listen(port, () => {

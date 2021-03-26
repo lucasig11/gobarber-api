@@ -15,6 +15,7 @@ interface ISafeResponse {
 
 export default class UserAvatarController {
   public async update(request: Request, response: Response): Promise<Response> {
+
     const updateUserAvatar = container.resolve(UpdateUserAvatarService);
 
     const user = await updateUserAvatar.execute({
@@ -24,6 +25,6 @@ export default class UserAvatarController {
 
     const safeResponse:ISafeResponse = user;
 
-    return response.json(safeResponse);
+    return response.status(204).json(safeResponse);
   }
 }

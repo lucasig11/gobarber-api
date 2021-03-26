@@ -22,7 +22,6 @@ export default class UpdateUserAvatarService {
   ) {}
 
   public async execute({ user_id, fileName}: IRequest): Promise<User>{
-
     const user = await this.usersRepository.findByID(user_id);
 
     if (!user) {
@@ -36,10 +35,8 @@ export default class UpdateUserAvatarService {
     const file = await this.storageProvider.saveFile(fileName);
 
     user.avatar = file;
-
     await this.usersRepository.save(user);
 
     return user;
-
   }
 }
