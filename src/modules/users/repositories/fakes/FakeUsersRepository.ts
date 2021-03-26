@@ -1,6 +1,7 @@
+import { v4 } from 'uuid';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@users/dtos/ICreateUserDTO';
-import { v4 } from 'uuid';
 
 import User from '../../infra/typeorm/entities/User';
 
