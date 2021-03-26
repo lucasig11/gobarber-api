@@ -3,7 +3,7 @@ import CreateUserService from './CreateUserService';
 import AppError from '@shared/errors/AppError';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
-describe('AuthenticateUser',  () => {
+describe('CreateUser',  () => {
 
   it('should be able to create a new user', async () => {
     const UsersRepository = new FakeUsersRepository();
@@ -33,13 +33,11 @@ describe('AuthenticateUser',  () => {
       password: "1234"
     });
 
-    expect(async () => {
-      await CreateUser.execute({
-        name: "Lucas",
-        email: userEmail,
-        password: "1234"
-      })
-    }).rejects.toBeInstanceOf(AppError);
+    await expect(CreateUser.execute({
+      name: "Lucas",
+      email: userEmail,
+      password: "1234"
+    })).rejects.toBeInstanceOf(AppError);
   });
 
 })

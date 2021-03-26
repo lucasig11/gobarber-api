@@ -5,7 +5,7 @@ import AuthenticateUserService from './AuthenticateUserService';
 import CreateUserService from './CreateUserService';
 import AppError from '@shared/errors/AppError';
 
-describe('Create user',  () => {
+describe('Authenticate user',  () => {
 
   it('should be able to authenticate', async () => {
     const UsersRepository = new FakeUsersRepository();
@@ -34,12 +34,10 @@ describe('Create user',  () => {
 
     const AuthenticateUser = new AuthenticateUserService(UsersRepository, HashProvider);
 
-    expect(async () => {
-      await AuthenticateUser.execute({
+    await expect(AuthenticateUser.execute({
         email: "teste@teste.com",
         password: "12345"
-      })
-    }).rejects.toBeInstanceOf(AppError);
+      })).rejects.toBeInstanceOf(AppError);
   });
 
   it('should throw error on password mismatch', async () => {
@@ -55,12 +53,10 @@ describe('Create user',  () => {
       password: "54321"
     });
 
-    expect(async () => {
-      await AuthenticateUser.execute({
-        email: "teste@teste.com",
-        password: "12345"
-      })
-    }).rejects.toBeInstanceOf(AppError);
+    await expect(AuthenticateUser.execute({
+      email: "teste@teste.com",
+      password: "12345"
+    })).rejects.toBeInstanceOf(AppError);
   });
 
 })

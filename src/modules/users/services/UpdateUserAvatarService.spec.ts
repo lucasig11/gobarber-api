@@ -4,13 +4,19 @@ import FakeStorageProvider from '@shared/container/providers/StorageProvider/fak
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 import AppError from '@shared/errors/AppError';
 
-describe('AuthenticateUser',  () => {
+let UsersRepository: FakeUsersRepository;
+let StorageProvider: FakeStorageProvider;
+let UpdateAvatar: UpdateUserAvatarService;
+
+describe('UpdateUserAvatar',  () => {
+
+  beforeEach(() => {
+    UsersRepository = new FakeUsersRepository();
+    StorageProvider = new FakeStorageProvider();
+    UpdateAvatar = new UpdateUserAvatarService(UsersRepository, StorageProvider);
+  });
 
   it('should update user\'s avatar', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const StorageProvider = new FakeStorageProvider();
-    const UpdateAvatar = new UpdateUserAvatarService(UsersRepository, StorageProvider);
-
     const user = await UsersRepository.create({
       name: "Lucas",
       email: "teste@teste.com",
@@ -26,23 +32,13 @@ describe('AuthenticateUser',  () => {
   });
 
   it('should throw error if user is not authenticated', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const StorageProvider = new FakeStorageProvider();
-    const UpdateAvatar = new UpdateUserAvatarService(UsersRepository, StorageProvider);
-
-    expect(async () => {
-      await UpdateAvatar.execute({
-        fileName: 'avatar.jpg',
-        user_id: '13'
-      })
-    }).rejects.toBeInstanceOf(AppError);
+    await expect(UpdateAvatar.execute({
+      fileName: 'avatar.jpg',
+      user_id: '13'
+    })).rejects.toBeInstanceOf(AppError);
   });
 
   it('should delete previous avatar if user had one', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const StorageProvider = new FakeStorageProvider();
-    const UpdateAvatar = new UpdateUserAvatarService(UsersRepository, StorageProvider);
-
     const deleteFile = jest.spyOn(StorageProvider, 'deleteFile');
 
     const user = await UsersRepository.create({
@@ -63,5 +59,5 @@ describe('AuthenticateUser',  () => {
 
     expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
     expect(user.avatar).toBe('avatar2.jpg');
-  })
+  });
 })
