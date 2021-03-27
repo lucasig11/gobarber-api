@@ -20,8 +20,21 @@
     "prettier"
   ],
   "rules": {
+    "camelcase": "off",
+    "class-methods-use-this": "off",
     "prettier/prettier": "error",
-    "@typescript-eslint/interface-name-prefix": "always",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^I[A-Z]",
+          "match": true
+        }
+      }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
