@@ -10,13 +10,13 @@ import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
-  email: string,
-  password: string,
+  email: string;
+  password: string;
 }
 
 interface IResponse {
-  user: User,
-  token: string,
+  user: User;
+  token: string;
 }
 
 @injectable()
@@ -30,24 +30,26 @@ export default class AuthenticateUserService {
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Usuário/senha inválidos.', 401);
-    };
+    }
 
-    const passwordMatched = await this.hashProvider.compareHash(password, user.password);
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
 
     if (!passwordMatched) {
       throw new AppError('Usuário/senha inválidos.', 401);
-    };
+    }
 
     const { secret, expiresIn } = authConfig.jwt;
 
-    const token = sign({ }, secret, {
+    const token = sign({}, secret, {
       subject: user.id,
-      expiresIn: expiresIn,
+      expiresIn,
     });
 
     return {
