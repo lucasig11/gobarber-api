@@ -1,5 +1,6 @@
-export default interface IFindByMonthDTO {
+export default interface IFindByDayDTO {
   provider_id: string;
   month: number;
   year: number;
+  day: number;
 }
