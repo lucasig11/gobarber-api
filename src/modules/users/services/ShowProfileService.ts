@@ -11,6 +11,7 @@ interface IRequest {
 interface ISafeResponse {
   id: string;
   name: string;
+  password?: string;
   email: string;
   avatar: string;
   created_at: Date;
@@ -31,7 +32,9 @@ export default class ShowProfileService {
       throw new AppError('User not found.', 401);
     }
 
-    const safeResponse = user;
+    const safeResponse: ISafeResponse = user;
+
+    delete safeResponse.password;
 
     return safeResponse;
   }
