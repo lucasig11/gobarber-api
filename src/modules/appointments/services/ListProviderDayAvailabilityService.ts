@@ -1,5 +1,5 @@
 // import { getDate, getDaysInMonth } from 'date-fns';
-import { getHours } from 'date-fns';
+import { getHours, isAfter } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
@@ -44,13 +44,15 @@ export default class ListProvidersDayAvailabilityService {
     );
 
     const availability = dayArray.map(hour => {
-      const appointmentsInHour = appointments.find(
+      const isAppointmentTaken = appointments.find(
         appointment => getHours(appointment.date) === hour,
       );
 
       return {
         hour,
-        available: !appointmentsInHour,
+        available:
+          !isAppointmentTaken &&
+          isAfter(new Date(year, month - 1, day, hour), new Date(Date.now())),
       };
     });
 

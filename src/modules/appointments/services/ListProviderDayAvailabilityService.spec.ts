@@ -15,13 +15,17 @@ describe('ListProviderMonthAvailability', () => {
   it("should be able to list the provider's appointments in a given day", async () => {
     fakeAppointmentsRepository.create({
       provider_id: 'user',
-      date: new Date(2021, 4, 20, 10, 0, 0),
+      date: new Date(2021, 4, 20, 12, 0, 0),
     });
 
     fakeAppointmentsRepository.create({
       provider_id: 'user',
-      date: new Date(2021, 4, 20, 12, 0, 0),
+      date: new Date(2021, 4, 20, 14, 0, 0),
     });
+
+    jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => new Date(2021, 4, 20, 11).getTime());
 
     const availability = await listDayAvailability.execute({
       provider_id: 'user',
@@ -32,10 +36,11 @@ describe('ListProviderMonthAvailability', () => {
 
     expect(availability).toEqual(
       expect.arrayContaining([
+        { hour: 9, available: false },
         { hour: 10, available: false },
-        { hour: 11, available: true },
         { hour: 12, available: false },
         { hour: 13, available: true },
+        { hour: 14, available: false },
       ]),
     );
   });
