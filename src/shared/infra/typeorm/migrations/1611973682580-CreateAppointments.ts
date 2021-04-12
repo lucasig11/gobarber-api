@@ -1,7 +1,7 @@
-import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateAppointments1611973682580 implements MigrationInterface {
-
+export default class CreateAppointments1611973682580
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -34,14 +34,13 @@ export class CreateAppointments1611973682580 implements MigrationInterface {
             name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
-          }
-        ]
-      })
-      );
-
-    }
-    public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropTable('appointments');
-    }
-
+          },
+        ],
+      }),
+    );
   }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('appointments');
+  }
+}
