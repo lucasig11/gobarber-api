@@ -13,19 +13,14 @@ describe('ListProviderMonthAvailability', () => {
   });
 
   it("should be able to list the provider's appointments in a given day", async () => {
-    fakeAppointmentsRepository.create({
-      provider_id: 'user',
-      date: new Date(2021, 4, 20, 10, 0, 0),
-    });
+    const hours = [10, 12, 14];
 
-    fakeAppointmentsRepository.create({
-      provider_id: 'user',
-      date: new Date(2021, 4, 20, 12, 0, 0),
-    });
-
-    fakeAppointmentsRepository.create({
-      provider_id: 'user',
-      date: new Date(2021, 4, 20, 14, 0, 0),
+    hours.forEach(hour => {
+      fakeAppointmentsRepository.create({
+        provider_id: 'providerID',
+        user_id: 'userID',
+        date: new Date(2021, 4, 20, hour, 0, 0),
+      });
     });
 
     jest
@@ -33,7 +28,7 @@ describe('ListProviderMonthAvailability', () => {
       .mockImplementation(() => new Date(2021, 4, 20, 11).getTime());
 
     const availability = await listDayAvailability.execute({
-      provider_id: 'user',
+      provider_id: 'providerID',
       day: 20,
       month: 5,
       year: 2021,

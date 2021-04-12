@@ -13,12 +13,13 @@ describe('CreateAppointment', () => {
     const appointment = await createAppointment.execute({
       date: new Date(),
       provider_id: '131313131313',
+      user_id: '1313131313',
     });
 
     expect(appointment).toHaveProperty('id');
   });
 
-  test('should throw an error on date collisions', async () => {
+  it('should throw an error on date collisions', async () => {
     const fakeAppointmentsRepository = new FakeAppointmentsRepository();
     const createAppointment = new CreateAppointmentService(
       fakeAppointmentsRepository,
@@ -28,12 +29,14 @@ describe('CreateAppointment', () => {
     await createAppointment.execute({
       date: appointmentDate,
       provider_id: '13',
+      user_id: '1313',
     });
 
     expect(async () => {
       await createAppointment.execute({
         date: appointmentDate,
         provider_id: '13',
+        user_id: '1313',
       });
     }).rejects.toBeInstanceOf(AppError);
   });

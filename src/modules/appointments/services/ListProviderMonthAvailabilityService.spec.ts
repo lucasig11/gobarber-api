@@ -15,13 +15,14 @@ describe('ListProviderMonthAvailability', () => {
   it('should be able to list the providers, except the local user', async () => {
     for (let i = 8; i <= 17; i++) {
       fakeAppointmentsRepository.create({
-        provider_id: 'user',
+        provider_id: 'providerID',
+        user_id: 'userID',
         date: new Date(2021, 4, 20, i, 0, 0),
       });
     }
 
     const availability = await listMonthAvailability.execute({
-      provider_id: 'user',
+      provider_id: 'providerID',
       year: 2021,
       month: 5,
     });
