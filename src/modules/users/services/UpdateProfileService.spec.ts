@@ -9,6 +9,7 @@ let usersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let updateProfileService: UpdateProfileService;
 let user: User;
+let user2: User;
 
 describe('UpdateProfile', () => {
   beforeEach(async () => {
@@ -23,6 +24,12 @@ describe('UpdateProfile', () => {
       name: 'TestUser',
       email: 'test@test.com',
       password: '1234',
+    });
+
+    user2 = await usersRepository.create({
+      name: 'TestUser',
+      email: 'test2@test.com',
+      password: '5678',
     });
   });
 
@@ -43,8 +50,18 @@ describe('UpdateProfile', () => {
     await expect(
       updateProfileService.execute({
         email: user.email,
-        name: 'newName',
-        user_id: 'randomUserID',
+        name: 'TestUser2',
+        user_id: user2.id,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should throw error on invalid user id', async () => {
+    await expect(
+      updateProfileService.execute({
+        email: user.email,
+        name: 'InvalidUserIDName',
+        user_id: 'invalidID',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -52,7 +69,7 @@ describe('UpdateProfile', () => {
   it('should throw error on invalid old password', async () => {
     await expect(
       updateProfileService.execute({
-        email: 'updated@teste.com',
+        email: user.email,
         name: 'newName',
         user_id: user.id,
         password: 'newPassword',
@@ -70,5 +87,16 @@ describe('UpdateProfile', () => {
         password: 'newPassword',
       }),
     ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not update the password if we do not send a new one', async () => {
+    const profile = await updateProfileService.execute({
+      email: 'updated@teste.com',
+      name: 'newName',
+      user_id: user.id,
+      old_password: user.password,
+    });
+
+    expect(profile.password).toBe('1234');
   });
 });

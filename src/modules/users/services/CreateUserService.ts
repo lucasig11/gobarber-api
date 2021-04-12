@@ -2,15 +2,15 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import IHashProvider from '../providers/HashProvider/models/IHashProvider'
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
-  name: string,
-  email: string,
-  password: string,
+  name: string;
+  email: string;
+  password: string;
 }
 
 @injectable()
@@ -23,7 +23,7 @@ export default class CreateUserService {
     private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({name, email, password}: IRequest): Promise<User> {
+  public async execute({ name, email, password }: IRequest): Promise<User> {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     const hashedPassword = await this.hashProvider.generateHash(password);
@@ -38,6 +38,6 @@ export default class CreateUserService {
       password: hashedPassword,
     });
 
-    return user
+    return user;
   }
 }
