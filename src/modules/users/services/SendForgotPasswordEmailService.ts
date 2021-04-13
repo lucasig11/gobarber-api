@@ -3,12 +3,12 @@ import path from 'path';
 
 import AppError from '@shared/errors/AppError';
 
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 
 interface IRequest {
-  email: string,
+  email: string;
 }
 
 @injectable()
@@ -32,12 +32,12 @@ export default class SendForgotPasswordEmailService {
       throw new AppError('User does not exist.');
     }
 
-    const {token} = await this.userTokensRepository.generate(user.id)
+    const { token } = await this.userTokensRepository.generate(user.id);
     const email_template = path.resolve(
       __dirname,
       '..',
       'templates',
-      'forgot_password.hbs'
+      'forgot_password.hbs',
     );
     await this.mailProvider.sendMail({
       subject: 'Recuperação de senha.',
@@ -49,9 +49,9 @@ export default class SendForgotPasswordEmailService {
         file: email_template,
         variables: {
           name: user.name,
-          token: token,
-        }
-      }
+          link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
+        },
+      },
     });
   }
 }
