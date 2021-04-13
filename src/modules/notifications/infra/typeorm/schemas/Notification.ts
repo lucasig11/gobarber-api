@@ -16,7 +16,7 @@ export default class Notification {
   content: string;
 
   @Column('uuid')
-  receiver_id: string;
+  recipient_id: string;
 
   @Column({ default: false })
   read: boolean;
