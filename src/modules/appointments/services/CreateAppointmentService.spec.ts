@@ -19,36 +19,66 @@ describe('CreateAppointment', () => {
 
   it('should be able to create a new appointment', async () => {
     const appointment = await createAppointment.execute({
+      user_id: 'user-id',
+      provider_id: 'provider-id',
       date: new Date(2021, 4, 20, 12),
-      provider_id: '13',
-      user_id: '1313',
     });
 
     expect(appointment).toHaveProperty('id');
+    expect(appointment.provider_id).toBe('provider-id');
   });
 
   it('should throw an error on date collisions', async () => {
     await createAppointment.execute({
+      user_id: 'user-id',
+      provider_id: 'provider-id',
       date: new Date(2021, 4, 20, 12),
-      provider_id: '13',
-      user_id: '1313',
     });
-    await expect(async () =>
+
+    await expect(
       createAppointment.execute({
+        user_id: 'user-id',
+        provider_id: 'provider-id',
         date: new Date(2021, 4, 20, 12),
-        provider_id: '13',
-        user_id: '1313',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should not be able to create an appointment on a past date', async () => {
-    expect(async () => {
-      await createAppointment.execute({
+    await expect(
+      createAppointment.execute({
+        user_id: 'user-id',
+        provider_id: 'provider-id',
         date: new Date(2021, 4, 20, 9),
-        provider_id: '13',
-        user_id: '1313',
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should throw an error if the user is his own provider', async () => {
+    await expect(
+      createAppointment.execute({
+        user_id: 'user-id',
+        provider_id: 'user-id',
+        date: new Date(2021, 4, 20, 13),
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should throw an error if date is out of boundaries (8am - 5pm)', async () => {
+    await expect(
+      createAppointment.execute({
+        user_id: 'user-id',
+        provider_id: 'provider-id',
+        date: new Date(2021, 5, 20, 7),
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+
+    await expect(
+      createAppointment.execute({
+        user_id: 'user-id',
+        provider_id: 'provider-id',
+        date: new Date(2021, 5, 20, 18),
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

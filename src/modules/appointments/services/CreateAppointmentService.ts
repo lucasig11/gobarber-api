@@ -1,4 +1,4 @@
-import { isBefore, startOfHour } from 'date-fns';
+import { isBefore, startOfHour, isWithinInterval } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
@@ -27,6 +27,14 @@ class CreateAppointmentService {
 
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError('Invalid date.');
+    }
+
+    if (user_id === provider_id) {
+      throw new AppError("You can't book an appointment with yourself.");
+    }
+
+    if (!isWithinInterval(date.getHours(), { start: 8, end: 17 })) {
+      throw new AppError('You must book an appointment between 8AM and 5PM');
     }
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
