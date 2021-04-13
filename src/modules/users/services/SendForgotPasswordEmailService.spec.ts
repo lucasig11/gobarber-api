@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppError';
 
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeMailProvider from '@shared/container/providers/MailProvider/fakes/FakeMailProvider';
+import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '../repositories/fakes/FakeUserTokensRepository';
 
 import SendForgotPasswordEmailService from './SendForgotPasswordEmailService';
@@ -11,12 +11,16 @@ let mailProvider: FakeMailProvider;
 let tokenRepository: FakeUserTokensRepository;
 let recoverPasswordService: SendForgotPasswordEmailService;
 
-describe('SendForgotPasswordEmail',  () => {
+describe('SendForgotPasswordEmail', () => {
   beforeEach(() => {
     usersRepository = new FakeUsersRepository();
     mailProvider = new FakeMailProvider();
     tokenRepository = new FakeUserTokensRepository();
-    recoverPasswordService = new SendForgotPasswordEmailService(usersRepository, mailProvider, tokenRepository);
+    recoverPasswordService = new SendForgotPasswordEmailService(
+      usersRepository,
+      mailProvider,
+      tokenRepository,
+    );
   });
 
   it('should be able to recover the password using the e-mail', async () => {
@@ -26,19 +30,21 @@ describe('SendForgotPasswordEmail',  () => {
       name: 'Lucas',
       email: 'teste@teste.com',
       password: '123456',
-    })
+    });
 
     await recoverPasswordService.execute({
-      email: "teste@teste.com",
+      email: 'teste@teste.com',
     });
 
     expect(sendMail).toHaveBeenCalled();
   });
 
   it('should throw error on invalid e-mail', async () => {
-    await expect(recoverPasswordService.execute({
-      email: "teste@teste.com",
-    })).rejects.toBeInstanceOf(AppError);
+    await expect(
+      recoverPasswordService.execute({
+        email: 'teste@teste.com',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should generate a token for a valid forgotten password request', async () => {
@@ -48,12 +54,12 @@ describe('SendForgotPasswordEmail',  () => {
       name: 'Lucas',
       email: 'teste@teste.com',
       password: '123456',
-    })
+    });
 
     await recoverPasswordService.execute({
-      email: "teste@teste.com",
+      email: 'teste@teste.com',
     });
 
     expect(generateToken).toHaveBeenCalled();
-  })
-})
+  });
+});
