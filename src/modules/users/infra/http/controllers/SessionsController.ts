@@ -1,20 +1,11 @@
-import { Request, Response } from  'express';
+import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import AuthenticateUserService from '@users/services/AuthenticateUserService';
-
-interface ISafeResponse {
-  id: string;
-  name: string;
-  email: string;
-  password?: string;
-  avatar?: string;
-  created_at: Date;
-  updated_at: Date;
-}
+import { classToClass } from 'class-transformer';
 
 export default class SessionsController {
-  public async create(request: Request, response: Response): Promise<Response>{
+  public async create(request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body;
 
     const authenticateUser = container.resolve(AuthenticateUserService);
@@ -23,11 +14,6 @@ export default class SessionsController {
       email,
       password,
     });
-
-    const safeResponse:ISafeResponse = user;
-    delete safeResponse.password;
-
-    return response.json({ safeResponse, token });
+    return response.json({ user: classToClass(user), token });
   }
-
 }

@@ -32,10 +32,6 @@ export default class ShowProfileService {
       throw new AppError('User not found.', 401);
     }
 
-    const safeResponse: ISafeResponse = user;
-
-    delete safeResponse.password;
-
-    return safeResponse;
+    return user;
   }
 }
