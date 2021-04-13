@@ -1,6 +1,9 @@
 # Go Barber Server API
 
-- The api will start at localhost:3333
+### Pre requisites
+- Docker
+- Node.js
+
 
 ### Setup
 ```bash
@@ -15,6 +18,7 @@ yarn test
 ```
 
 ### Run development server (the settings are at ormconfig.json)
+#### - The api will start at localhost:3333
 ```bash
 docker run --name docker_pg -e POSTGRES-PASSWORD=docker -p 5432:5432 -d postgres ## run postgres container at port 5432
 docker start docker_pg
