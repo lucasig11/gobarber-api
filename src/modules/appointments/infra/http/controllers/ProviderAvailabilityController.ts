@@ -26,19 +26,13 @@ export default class ProviderMonthAvailabilityController {
       ListProviderDayAvailabilityService,
     );
 
-    try {
-      const availability = await dayAvailability.execute({
-        provider_id,
-        day,
-        month,
-        year,
-      });
+    const availability = await dayAvailability.execute({
+      provider_id,
+      day,
+      month,
+      year,
+    });
 
-      return response.json(availability);
-    } catch (err) {
-      console.log(err);
-    }
-
-    return response.json({});
+    return response.json(availability);
   }
 }
