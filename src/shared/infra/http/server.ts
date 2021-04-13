@@ -19,6 +19,7 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
 app.use(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof AppError) {
       return response.status(err.statusCode).json({
@@ -35,5 +36,8 @@ app.use(
 );
 
 app.listen(port, () => {
-  console.log(`Server started on port ${port}.`);
+  // eslint-disable-next-line no-console
+  console.log(
+    `[\x1b[92mSUCCESS\x1b[0m] Server started at port \x1b[34m${port}\x1b[0m.`,
+  );
 });
