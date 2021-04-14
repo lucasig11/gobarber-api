@@ -42,6 +42,6 @@ app.use(
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(
-    `[\x1b[92mSUCCESS\x1b[0m] Server started at port \x1b[34m${port}\x1b[0m.`,
+    `[\x1b[92mSUCCESS\x1b[0m] Server succesfully started at \x1b[34m${process.env.APP_API_URL}\x1b[0m`,
   );
 });
