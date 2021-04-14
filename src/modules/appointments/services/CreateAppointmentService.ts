@@ -28,7 +28,7 @@ class CreateAppointmentService {
   }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
-    if (isBefore(appointmentDate, Date.now())) {
+    if (isBefore(appointmentDate, new Date(Date.now()))) {
       throw new AppError('Invalid date.');
     }
 
@@ -36,7 +36,7 @@ class CreateAppointmentService {
       throw new AppError("You can't book an appointment with yourself.");
     }
 
-    if (!isWithinInterval(date.getHours(), { start: 8, end: 17 })) {
+    if (!isWithinInterval(appointmentDate.getHours(), { start: 8, end: 17 })) {
       throw new AppError('You must book an appointment between 8AM and 5PM');
     }
 
