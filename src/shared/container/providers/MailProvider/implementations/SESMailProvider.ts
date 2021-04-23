@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import aws from 'aws-sdk';
 
 import mailConfig from '@config/mail';
+import awsConfig from '@config/aws';
 
 import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
 
@@ -20,7 +21,7 @@ export default class FakeMailProvider implements IMailProvider {
     this.client = nodemailer.createTransport({
       SES: new aws.SES({
         apiVersion: '2010-12-01',
-        region: 'us-east-2',
+        region: awsConfig.ses.region,
       }),
     });
   }
