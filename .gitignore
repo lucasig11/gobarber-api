@@ -130,7 +130,3 @@ temp/
 !tmp/.gitkeep
 
 # End of https://www.toptal.com/developers/gitignore/api/node
-
-# ORM
-ormconfig.json
-
