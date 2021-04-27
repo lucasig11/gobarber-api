@@ -2,6 +2,7 @@ import { isBefore, startOfHour, isWithinInterval, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import IAppointmentsRepository from '@appointments/repositories/IAppointmentsRepository';
 import Appointment from '../infra/typeorm/entities/Appointments';
@@ -17,8 +18,12 @@ class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
+
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -47,6 +52,7 @@ class CreateAppointmentService {
     if (findAppointmentInSameDate) {
       throw new AppError('This appointment is already booked.');
     }
+
     const appointment = await this.appointmentsRepository.create({
       provider_id,
       user_id,
@@ -59,6 +65,14 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `Novo agendamento marcado para o dia ${formattedDate}`,
     });
+
+    await this.cacheProvider.invalidate(
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        'Y-M-d',
+      )}`,
+    );
+
     return appointment;
   }
 }
