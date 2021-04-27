@@ -4,20 +4,24 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
 import AuthenticateUserService from './AuthenticateUserService';
-import CreateUserService from './CreateUserService';
+
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let AuthenticateUser: AuthenticateUserService;
 
 describe('Authenticate user', () => {
-  it('should be able to authenticate', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const HashProvider = new FakeHashProvider();
+  beforeEach(async () => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
 
-    const AuthenticateUser = new AuthenticateUserService(
-      UsersRepository,
-      HashProvider,
+    AuthenticateUser = new AuthenticateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
     );
-    const CreateUser = new CreateUserService(UsersRepository, HashProvider);
+  });
 
-    await CreateUser.execute({
+  it('should be able to authenticate', async () => {
+    await fakeUsersRepository.create({
       name: 'Lucas',
       email: 'teste@teste.com',
       password: '12345',
@@ -32,14 +36,6 @@ describe('Authenticate user', () => {
   });
 
   it('should throw error on invalid user', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const HashProvider = new FakeHashProvider();
-
-    const AuthenticateUser = new AuthenticateUserService(
-      UsersRepository,
-      HashProvider,
-    );
-
     await expect(
       AuthenticateUser.execute({
         email: 'teste@teste.com',
@@ -48,17 +44,8 @@ describe('Authenticate user', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should throw error on password mismatch', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const HashProvider = new FakeHashProvider();
-
-    const AuthenticateUser = new AuthenticateUserService(
-      UsersRepository,
-      HashProvider,
-    );
-    const CreateUser = new CreateUserService(UsersRepository, HashProvider);
-
-    await CreateUser.execute({
+  it('should throw an error on password mismatch', async () => {
+    await fakeUsersRepository.create({
       name: 'Lucas',
       email: 'teste@teste.com',
       password: '54321',

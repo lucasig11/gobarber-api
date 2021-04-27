@@ -1,17 +1,33 @@
+import 'reflect-metadata';
+
 import AppError from '@shared/errors/AppError';
+
+import CreateUserService from './CreateUserService';
 
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
-import CreateUserService from './CreateUserService';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
+let createUser: CreateUserService;
+let fakeUsersRepository: FakeUsersRepository;
+let fakeCacheProvider: FakeCacheProvider;
+let fakeHashProvider: FakeHashProvider;
 
 describe('CreateUser', () => {
+  beforeEach(async () => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
+
+    createUser = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+      fakeCacheProvider,
+    );
+  });
+
   it('should be able to create a new user', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const HashProvider = new FakeHashProvider();
-
-    const CreateUser = new CreateUserService(UsersRepository, HashProvider);
-
-    const user = await CreateUser.execute({
+    const user = await createUser.execute({
       name: 'Lucas',
       email: 'teste@teste.com',
       password: '1234',
@@ -21,20 +37,16 @@ describe('CreateUser', () => {
   });
 
   it('should throw error on e-mail collision', async () => {
-    const UsersRepository = new FakeUsersRepository();
-    const HashProvider = new FakeHashProvider();
-
-    const CreateUser = new CreateUserService(UsersRepository, HashProvider);
     const userEmail = 'teste@teste.com';
 
-    await CreateUser.execute({
+    await createUser.execute({
       name: 'Lucas',
       email: userEmail,
       password: '1234',
     });
 
     await expect(
-      CreateUser.execute({
+      createUser.execute({
         name: 'Lucas',
         email: userEmail,
         password: '1234',

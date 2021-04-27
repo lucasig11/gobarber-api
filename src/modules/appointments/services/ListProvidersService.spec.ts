@@ -1,13 +1,21 @@
-import FakeUsersRepository from '@users/repositories/fakes/FakeUsersRepository';
+import 'reflect-metadata';
+
 import ListProvidersService from './ListProvidersService';
+import FakeUsersRepository from '@users/repositories/fakes/FakeUsersRepository';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let usersRepository: FakeUsersRepository;
 let listProviders: ListProvidersService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('ListProviders', () => {
   beforeEach(async () => {
     usersRepository = new FakeUsersRepository();
-    listProviders = new ListProvidersService(usersRepository);
+    fakeCacheProvider = new FakeCacheProvider();
+    listProviders = new ListProvidersService(
+      usersRepository,
+      fakeCacheProvider,
+    );
   });
 
   it('should be able to list the providers, except the local user', async () => {
