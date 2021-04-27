@@ -34,8 +34,6 @@ export default class ListProviderAppointmentsService {
       year,
     });
 
-    this.cacheProvider.save('asda', 'safd');
-
     return appointments;
   }
 }
