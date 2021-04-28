@@ -6,6 +6,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { errors } from 'celebrate';
 
+import limitRequests from './middlewares/limitRequests';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
@@ -16,6 +17,7 @@ import '@shared/container';
 const app = express();
 const port = 3333;
 
+app.use(limitRequests);
 app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
