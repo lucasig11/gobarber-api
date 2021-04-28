@@ -17,10 +17,10 @@ import '@shared/container';
 const app = express();
 const port = 3333;
 
-app.use(limitRequests);
 app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use(limitRequests);
 app.use(routes);
 
 app.use(errors());
