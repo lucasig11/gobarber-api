@@ -3,18 +3,22 @@ import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 
 import UpdateUserAvatarService from './UpdateUserAvatarService';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let UsersRepository: FakeUsersRepository;
 let StorageProvider: FakeStorageProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let UpdateAvatar: UpdateUserAvatarService;
 
 describe('UpdateUserAvatar', () => {
   beforeEach(() => {
     UsersRepository = new FakeUsersRepository();
     StorageProvider = new FakeStorageProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     UpdateAvatar = new UpdateUserAvatarService(
       UsersRepository,
       StorageProvider,
+      fakeCacheProvider,
     );
   });
 

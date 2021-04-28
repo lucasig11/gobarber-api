@@ -4,10 +4,12 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import UpdateProfileService from './UpdateProfileService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import User from '../infra/typeorm/entities/User';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let usersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let updateProfileService: UpdateProfileService;
+let fakeCacheProvider: FakeCacheProvider;
 let user: User;
 let user2: User;
 
@@ -15,9 +17,11 @@ describe('UpdateProfile', () => {
   beforeEach(async () => {
     usersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     updateProfileService = new UpdateProfileService(
       usersRepository,
       fakeHashProvider,
+      fakeCacheProvider,
     );
 
     user = await usersRepository.create({
