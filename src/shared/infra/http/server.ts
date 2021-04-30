@@ -6,9 +6,9 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { errors } from 'celebrate';
 
-import limitRequests from './middlewares/limitRequests';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import limitRequests from './middlewares/limitRequests';
 import routes from './routes';
 
 import '@shared/infra/typeorm';
@@ -34,7 +34,7 @@ app.use(
         message: err.message,
       });
     }
-    console.log(err);
+    // console.log(err);
     return response.status(500).json({
       status: 'error',
       message: 'Internal server error.',

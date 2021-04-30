@@ -67,6 +67,11 @@ class CreateAppointmentService {
       content: `Novo agendamento marcado para o dia ${formattedDate}`,
     });
 
+    await this.notificationsRepository.create({
+      recipient_id: user_id,
+      content: `Você marcou um agendamento para o dia ${formattedDate}`,
+    });
+
     await this.cacheProvider.invalidate(
       `provider-appointments:${provider_id}:${format(
         appointmentDate,

@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 
-import ListProvidersService from './ListProvidersService';
 import FakeUsersRepository from '@users/repositories/fakes/FakeUsersRepository';
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import ListProvidersService from './ListProvidersService';
 
 let usersRepository: FakeUsersRepository;
 let listProviders: ListProvidersService;

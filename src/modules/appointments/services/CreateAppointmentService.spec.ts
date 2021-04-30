@@ -1,11 +1,10 @@
 import 'reflect-metadata';
 
 import AppError from '@shared/errors/AppError';
-import CreateAppointmentService from './CreateAppointmentService';
-
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
-import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import CreateAppointmentService from './CreateAppointmentService';
+import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
 let createAppointment: CreateAppointmentService;
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
