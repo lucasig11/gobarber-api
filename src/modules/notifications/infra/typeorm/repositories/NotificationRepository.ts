@@ -1,4 +1,5 @@
 import { getMongoRepository, MongoRepository } from 'typeorm';
+// import { ObjectID } from 'mongodb';
 
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import ICreateNotificationDTO from '@modules/notifications/dtos/ICreateNotificationDTO';
@@ -24,5 +25,28 @@ export default class NotificationsRepository
     await this.ormRepository.save(notification);
 
     return notification;
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
+  }
+
+  public async read(id: string): Promise<void> {
+    const notification = await this.ormRepository.findOne(id);
+
+    if (notification) {
+      notification.read = true;
+      await this.ormRepository.save(notification);
+    }
+  }
+
+  public async list(recipient_id: string): Promise<Notification[]> {
+    const notifications = await this.ormRepository.find({
+      where: {
+        recipient_id,
+      },
+    });
+
+    return notifications;
   }
 }

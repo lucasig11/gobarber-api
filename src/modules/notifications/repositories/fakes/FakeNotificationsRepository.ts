@@ -20,4 +20,25 @@ export default class FakeNotificationsRepository
 
     return notification;
   }
+
+  public async delete(id: string): Promise<void> {
+    this.notifications = this.notifications.filter(
+      notification => notification.id.toString() !== id,
+    );
+  }
+
+  public async read(id: string): Promise<void> {
+    const notification = this.notifications.findIndex(
+      n => n.id.toString() === id,
+    );
+    this.notifications[notification].read = true;
+  }
+
+  public async list(user_id: string): Promise<Notification[]> {
+    const notifications = this.notifications.filter(notification => {
+      return notification.recipient_id === user_id;
+    });
+
+    return notifications;
+  }
 }
