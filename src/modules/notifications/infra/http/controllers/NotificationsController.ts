@@ -17,11 +17,15 @@ export default class NotificationsController {
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { notification_id } = request.body;
+    const { notification_id } = request.query;
 
     const deleteNotification = container.resolve(DeleteNotificationService);
 
-    await deleteNotification.execute({ notification_id });
+    if (notification_id) {
+      await deleteNotification.execute({
+        notification_id: notification_id.toString(),
+      });
+    }
 
     return response.status(204).json();
   }
