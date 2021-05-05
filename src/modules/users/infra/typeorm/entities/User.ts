@@ -29,7 +29,7 @@ export default class User {
   @Column()
   avatar: string;
 
-  @Column()
+  @Column({ default: false })
   isProvider: boolean;
 
   @CreateDateColumn()
