@@ -1,48 +1,61 @@
-# Go Barber Server API
+<p align="center">
+  <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=8257E5&labelColor=000000">
+</p>
 
-### Technologies
+<p align="center">
+    <img alt="GoBarber" src=".github/logo.svg">
+</p>
 
-- Node.js
-- Docker
-- Postgres
-- MongoDB
+<p align="center">
+  |&nbsp;&nbsp;&nbsp;
+  <a href="#-technologies">Techs</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-project">Project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-run">Run</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-API-Docs">Docs</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+</p>
 
-### Running the app
+---
 
-### Pre requisites
+## 👨‍💻 Technologies
 
-- Docker
-- Node.js
+This project was developed using the following technologies:
 
-### Setup
+-   [NodeJS](https://nodejs.org/en/)
+-   [Docker](https://www.docker.com/)
+-   [Postgres](https://www.postgresql.org/)
+-   [MongoDB](https://www.mongodb.com/)
+
+## 💻 Project
+
+This is the GoBarber's back-end. It is a RESTful API developed using NodeJS and Typescript, as well as different database systems like MongoDB, PostgreSQL and Redis.
+The project was built in conjunction with the GoStack Bootcamp and differs somewhat from the original, with notification routes, differentiation between customers and providers and other minor changes to better fit the front-end's needs.
+
+## 🚀 Run
+
+Make sure you have NodeJS (`node -v`) and Docker (`docker -v`, optional but highly recommended) installed in your machine.
 
 ```bash
-git clone repoURL
-cd repo
-yarn
-```
+git clone https://github.com/lucasig11/gobarber-web                             ## clone the project
 
-### Run tests
-
-```bash
-yarn test
-```
-
-### Run development server (the database settings are at ormconfig.json)
-
-#### - The api will start at localhost:3333
-
-```bash
 docker run --name postgres -e POSTGRES-PASSWORD=docker -p 5432:5432 -d postgres ## create postgres container
 docker run --name mongodb -p 27017:27017 -d -t mongo                            ## create mongodb container
 docker run --name redis -p 6379:6379 -d -t redis:alpine                         ## create redis container
 
 docker start postgres mongodb redis                                             ## start all the containers
 
+cd gobarber-web                                                                 ## cd into the directory
+
+yarn                                                                            ## install deps
+
 yarn typeorm migration:run                                                      ## run the database migrations
 
-yarn dev:server                                                                 ## start node server
+yarn dev:server                                                                 ## start node
+
+## Tests
+yarn test
 ```
+
+---
 
 # API Docs
 
@@ -122,3 +135,7 @@ interface Notification {
 | **GET** _/notifications_    | Get authenticated user's notifications | Auth: Bearer Token | -                 | -                           | Notification[] |
 | **PATCH** _/notifications_  | Mark notification as read              | Auth: Bearer Token | -                 | `{notification_id: string}` | -              |
 | **DELETE** _/notifications_ | Delete notification                    | Auth: Bearer Token | `notification_id` | -                           | -              |
+
+---
+
+Made with ♥ by [lucasig11](https://github.com/lucasig11) 👋🏻
