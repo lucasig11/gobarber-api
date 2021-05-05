@@ -1,10 +1,10 @@
 import AppError from '@shared/errors/AppError';
 
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import UpdateProfileService from './UpdateProfileService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import User from '../infra/typeorm/entities/User';
-import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let usersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;

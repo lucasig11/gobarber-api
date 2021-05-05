@@ -2,10 +2,10 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 interface IRequest {
   user_id: string;
@@ -13,6 +13,7 @@ interface IRequest {
   email: string;
   old_password?: string;
   password?: string;
+  isProvider?: boolean;
 }
 
 @injectable()
@@ -34,6 +35,7 @@ export default class UpdateProfileService {
     email,
     old_password,
     password,
+    isProvider,
   }: IRequest): Promise<User> {
     const user = await this.usersRepository.findByID(user_id);
 
@@ -49,6 +51,7 @@ export default class UpdateProfileService {
 
     user.name = name;
     user.email = email;
+    user.isProvider = !!isProvider;
 
     if (password && !old_password) {
       throw new AppError('You must inform your old password.');
