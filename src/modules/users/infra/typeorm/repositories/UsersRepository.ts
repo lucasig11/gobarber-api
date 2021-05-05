@@ -34,6 +34,7 @@ export default class UsersRepository implements IUsersRepository {
       const allProviders = await this.ormRepository.find({
         where: {
           id: Not(except_user_id),
+          isProvider: true,
         },
       });
 
