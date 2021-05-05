@@ -8,8 +8,8 @@ import {
 
 import { Exclude, Expose } from 'class-transformer';
 
-import uploadConfig from '@config/upload';
-import awsConfig from '@config/aws';
+import uploadConfig from '../../../../../config/upload';
+import awsConfig from '../../../../../config/aws';
 
 @Entity('users')
 export default class User {
