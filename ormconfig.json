@@ -6,7 +6,7 @@
     "port": 5432,
     "username": "postgres",
     "password": "docker",
-    "database": "node_pg",
+    "database": "postgres",
     "entities": [
       "./src/modules/**/infra/typeorm/entities/*.ts"
     ],

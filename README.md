@@ -37,19 +37,15 @@ Make sure you have NodeJS (`node -v`) and Docker (`docker -v`, optional but high
 ```bash
 git clone https://github.com/lucasig11/gobarber-web                             ## clone the project
 
-docker run --name postgres -e POSTGRES-PASSWORD=docker -p 5432:5432 -d postgres ## create postgres container
-docker run --name mongodb -p 27017:27017 -d -t mongo                            ## create mongodb container
-docker run --name redis -p 6379:6379 -d -t redis:alpine                         ## create redis container
-
-docker start postgres mongodb redis                                             ## start all the containers
-
 cd gobarber-web                                                                 ## cd into the directory
+
+docker compose up                                                               ## start the containers
 
 yarn                                                                            ## install deps
 
 yarn typeorm migration:run                                                      ## run the database migrations
 
-yarn dev:server                                                                 ## start node
+yarn dev:server                                                                 ## start node server
 
 ## Tests
 yarn test
